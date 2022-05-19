@@ -235,9 +235,13 @@ public class H5 implements java.io.Serializable {
         {
             return;
         }
-        if (NativeLibraryUtilities.loadNativeLibrary("jhdf5") == false)
+        if (NativeLibraryUtilities.loadNativeLibrary("hdf5") == false)
         {
             throw new UnsupportedOperationException("No suitable HDF5 native library found for this platform.");
+        }
+        if (NativeLibraryUtilities.loadNativeLibrary("jhdf5") == false)
+        {
+            throw new UnsupportedOperationException("No suitable JHDF5 native library found for this platform.");
         }
         isLibraryLoaded = true;
 
@@ -9658,4 +9662,3 @@ public class H5 implements java.io.Serializable {
 // /////// unimplemented ////////
 
 // herr_t H5Zregister(const void *cls);
-
