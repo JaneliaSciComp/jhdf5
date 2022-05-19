@@ -14,7 +14,9 @@
 
 package hdf.hdf5lib;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.file.Files;
 
 import ch.systemsx.cisd.base.utilities.NativeLibraryUtilities;
 import hdf.hdf5lib.callbacks.H5A_iterate_cb;
@@ -234,6 +236,14 @@ public class H5 implements java.io.Serializable {
         if (isLibraryLoaded)
         {
             return;
+        }
+        if (System.getProperty("native.caching.libpath") == null)
+        {
+            try {
+				System.setProperty("native.caching.libpath", Files.createTempDirectory("jhdf5").toString());
+			} catch (IOException e) {
+				throw new UnsupportedOperationException("Could not create a temporary native.caching.libpath");
+			}
         }
         if (NativeLibraryUtilities.loadNativeLibrary("hdf5") == false)
         {
