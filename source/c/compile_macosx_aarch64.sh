@@ -20,12 +20,20 @@ cp hdf5-$VERSION/src/H5private.h jni/
 
 echo "JHDF5 building..."
 pwd
-gcc -Wno-error=implicit-function-declaration -m64 -mmacosx-version-min=10.11 -dynamiclib -O3 jni/*.c -Ihdf5-${VERSION}-aarch64/include -I${JAVA_HOME}/include hdf5-${VERSION}-aarch64/lib/libhdf5.a -o libjhdf5.jnilib -lz &> jhdf5_build.log
+gcc -Wno-error=implicit-function-declaration -m64 -mmacosx-version-min=10.11 -dynamiclib -O3 jni/*.c -Ihdf5-${VERSION}-aarch64/include -I${JAVA_HOME}/include hdf5-${VERSION}-aarch64/lib/libhdf5.so -o libjhdf5.jnilib -lz &> jhdf5_build.log
 
-if [ -f libjhdf5.jnilib ]; then
-  cp -pf libjhdf5.jnilib "../../../libs/native/jhdf5/aarch64-Mac OS X"
-  echo "Build deployed"
+if [ -f "hdf5-${VERSION}-aarch64/lib/libhdf5.so" ]; then
+  mkdir -p "../../../libs/native/hdf5/aarch64-Mac OS X"
+  cp -pf "hdf5-${VERSION}-aarch64/lib/libhdf5.so" "../../../libs/native/hdf5/aarch64-Mac OS X/"
+  echo "HDF5 Build deployed"
 else
-  echo "ERROR"
+  echo "HDF5 ERROR"
 fi
 
+if [ -f libjhdf5.jnilib ]; then
+  mkdir -p "../../../libs/native/jhdf5/aarch64-Mac OS X"
+  cp -pf libjhdf5.jnilib "../../../libs/native/jhdf5/aarch64-Mac OS X"
+  echo "JHDF5 Build deployed"
+else
+  echo "JHDF5 ERROR"
+fi
