@@ -24,7 +24,7 @@ gcc -Wno-error=implicit-function-declaration -m64 -mmacosx-version-min=10.11 -dy
 
 if [ -f "hdf5-${VERSION}-aarch64/lib/libhdf5.dylib" ]; then
   mkdir -p "../../../libs/native/hdf5/aarch64-Mac OS X"
-  cp -pf "hdf5-${VERSION}-aarch64/lib/libhdf5.dylib" "../../../libs/native/hdf5/aarch64-Mac OS X/"
+  cp -pf "hdf5-${VERSION}-aarch64/lib/libhdf5.dylib" "../../../libs/native/hdf5/aarch64-Mac OS X/libhdf5.jnilib"
   echo "HDF5 Build deployed"
 else
   echo "HDF5 ERROR"

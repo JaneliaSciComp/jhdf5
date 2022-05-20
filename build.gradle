@@ -52,6 +52,7 @@ jar {
 
     from ("libs/") {
         include 'native/jhdf5/**/**/*'
+        include 'native/hdf5/**/**/*'
     }
 
     manifest {
