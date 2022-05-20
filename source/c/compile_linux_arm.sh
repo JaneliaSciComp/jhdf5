@@ -18,7 +18,7 @@ echo "JHDF5 building..."
 gcc -shared -O3 -Wl,--exclude-libs,ALL jni/*.c -Ihdf5-${VERSION}-armv6l/include -I/usr/java/jdk1.8.0/include -I/usr/java/jdk1.8.0/include/linux hdf5-${VERSION}-armv6l/lib/libhdf5.a -o libjhdf5.so -lz &> jhdf5_build.log
 
 if [ -f libjhdf5.so ]; then
-  cp -pf libjhdf5.so ../../../libs/native/jhdf5/amd64-Linux/
+  cp -pf libjhdf5.so ../../../libs/native/jhdf5/arm-Linux/
   echo "Build deployed"
 else
   echo "ERROR"
