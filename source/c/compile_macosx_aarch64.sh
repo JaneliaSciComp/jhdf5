@@ -24,6 +24,11 @@ echo "JHDF5 building..."
 pwd
 gcc -Wno-error=implicit-function-declaration -m64 -mmacosx-version-min=10.11 -dynamiclib -O3 jni/*.c -Ihdf5-${VERSION}-aarch64/include -I${JAVA_HOME}/include -I${JAVA_HOME}/include/darwin hdf5-${VERSION}-aarch64/lib/libhdf5.dylib -o libjhdf5.jnilib -lz &> jhdf5_build.log
 
+# Figure out path of linked libhdf5
+LIBHDF5=`otool -L libjhdf5.jnilib  | grep libhdf5 | cut -f 2 | cut -d" " -f 1`
+# Make the path of libhdf5 relative to the path of where libjhdf5 was loaded from
+install_name_tool -change $LIBHDF5 @loader_path/../../hdf5/x86_64-Mac\ OS\ X/libhdf5.jnilib libjhdf5.jnilib
+
 if [ -f "hdf5-${VERSION}-aarch64/lib/libhdf5.dylib" ]; then
   mkdir -p "../../../libs/native/hdf5/aarch64-Mac OS X"
   cp -pf "hdf5-${VERSION}-aarch64/lib/libhdf5.dylib" "../../../libs/native/hdf5/aarch64-Mac OS X/libhdf5.jnilib"
