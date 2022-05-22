@@ -247,7 +247,12 @@ public class H5 implements java.io.Serializable {
         }
         if (NativeLibraryUtilities.loadNativeLibrary("hdf5") == false)
         {
-            throw new UnsupportedOperationException("No suitable HDF5 native library found for this platform.");
+            // Try to load jhdf5 anyways, for legacy behavior where hdf5 is linked statically within jhdf5
+            System.err.println("Trying to load JHDF5 library despite missing HDF5 library.");
+            if (NativeLibraryUtilities.loadNativeLibrary("jhdf5") == false)
+            {
+                throw new UnsupportedOperationException("No suitable HDF5 native library found for this platform.");
+            }
         }
         if (NativeLibraryUtilities.loadNativeLibrary("jhdf5") == false)
         {
