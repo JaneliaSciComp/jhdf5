@@ -27,7 +27,7 @@ gcc -Wno-error=implicit-function-declaration -m64 -mmacosx-version-min=10.11 -dy
 # Figure out path of linked libhdf5
 LIBHDF5=`otool -L libjhdf5.jnilib  | grep libhdf5 | cut -f 2 | cut -d" " -f 1`
 # Make the path of libhdf5 relative to the path of where libjhdf5 was loaded from
-install_name_tool -change $LIBHDF5 @loader_path/../../hdf5/x86_64-Mac\ OS\ X/libhdf5.jnilib libjhdf5.jnilib
+install_name_tool -change $LIBHDF5 @loader_path/../../hdf5/aarch64-Mac\ OS\ X/libhdf5.jnilib libjhdf5.jnilib
 
 if [ -f "hdf5-${VERSION}-aarch64/lib/libhdf5.dylib" ]; then
   mkdir -p "../../../libs/native/hdf5/aarch64-Mac OS X"
