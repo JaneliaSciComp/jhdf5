@@ -14,7 +14,9 @@
 
 package hdf.hdf5lib;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.file.Files;
 
 import ch.systemsx.cisd.base.utilities.NativeLibraryUtilities;
 import hdf.hdf5lib.callbacks.H5A_iterate_cb;
@@ -235,9 +237,26 @@ public class H5 implements java.io.Serializable {
         {
             return;
         }
+        if (System.getProperty("native.caching.libpath") == null)
+        {
+            try {
+				System.setProperty("native.caching.libpath", Files.createTempDirectory("jhdf5").toString());
+			} catch (IOException e) {
+				throw new UnsupportedOperationException("Could not create a temporary native.caching.libpath");
+			}
+        }
+        if (NativeLibraryUtilities.loadNativeLibrary("hdf5") == false)
+        {
+            // Try to load jhdf5 anyways, for legacy behavior where hdf5 is linked statically within jhdf5
+            System.err.println("Trying to load JHDF5 library despite missing HDF5 library.");
+            if (NativeLibraryUtilities.loadNativeLibrary("jhdf5") == false)
+            {
+                throw new UnsupportedOperationException("No suitable HDF5 native library found for this platform.");
+            }
+        }
         if (NativeLibraryUtilities.loadNativeLibrary("jhdf5") == false)
         {
-            throw new UnsupportedOperationException("No suitable HDF5 native library found for this platform.");
+            throw new UnsupportedOperationException("No suitable JHDF5 native library found for this platform.");
         }
         isLibraryLoaded = true;
 
@@ -9658,4 +9677,3 @@ public class H5 implements java.io.Serializable {
 // /////// unimplemented ////////
 
 // herr_t H5Zregister(const void *cls);
-

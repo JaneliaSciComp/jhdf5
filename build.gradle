@@ -38,7 +38,7 @@ task processDistFiles( type: Copy) {
     }
 
    doLast {
-        execute('lowriter', [ '--headless', '--convert-to', 'pdf', '--outdir', "$buildDir/output/dist/doc", "$buildDir/output/dist/doc/JHDF5-${version}.odt" ])
+        //execute('lowriter', [ '--headless', '--convert-to', 'pdf', '--outdir', "$buildDir/output/dist/doc", "$buildDir/output/dist/doc/JHDF5-${version}.odt" ])
    }
 
 }
@@ -52,6 +52,7 @@ jar {
 
     from ("libs/") {
         include 'native/jhdf5/**/**/*'
+        include 'native/hdf5/**/**/*'
     }
 
     manifest {

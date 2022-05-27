@@ -13,3 +13,4 @@ Steps:
 6. In the command prompt window, run build-VS2017-64.bat
 7. If the build runs successful, you will find the file F:\c\build\CMake-hdf5-1.10.3\build\bin\Release\hdf5_java.dll
 8. Copy F:\c\build\CMake-hdf5-1.10.3\build\bin\Release\hdf5_java.dll to the Linux workspace folder libs/native/jhdf5/amd64-Windows/jhdf5.dll 
+9. Copy F:\c\build\CMake-hdf5-1.10.3\build\bin\Release\bin\hdf5.dll to the Linux workspace folder libs/native/hdf5/amd64-Windows/hdf5.dll 
