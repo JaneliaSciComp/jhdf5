@@ -19,6 +19,7 @@ import java.nio.ByteBuffer;
 import java.nio.file.Files;
 
 import ch.systemsx.cisd.base.utilities.NativeLibraryUtilities;
+import ch.systemsx.cisd.base.utilities.OSUtilities;
 import hdf.hdf5lib.callbacks.H5A_iterate_cb;
 import hdf.hdf5lib.callbacks.H5A_iterate_t;
 import hdf.hdf5lib.callbacks.H5D_iterate_cb;
@@ -258,6 +259,14 @@ public class H5 implements java.io.Serializable {
         {
             throw new UnsupportedOperationException("No suitable JHDF5 native library found for this platform.");
         }
+        if (NativeLibraryUtilities.loadNativeLibrary("blosc") == false)
+        {
+            System.err.println("Could not load blosc native library");
+        }
+        if(NativeLibraryUtilities.loadNativeLibrary("H5Zblosc") == false)
+        {
+            System.err.println("Could not load H5Zblosc native library plugin for HDF5");
+        }
         isLibraryLoaded = true;
 
         /* Important! Exit quietly */
@@ -273,6 +282,17 @@ public class H5 implements java.io.Serializable {
             H5error_off();
         }
         catch (HDF5LibraryException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        String H5Zblosc_plugin_path = null;
+        try {
+            H5Zblosc_plugin_path = System.getProperty("native.caching.libpath") + "/H5Zblosc/" + OSUtilities.getCompatibleComputerPlatform();
+            H5PLprepend(H5Zblosc_plugin_path);
+        }
+        catch (HDF5LibraryException e) {
+            System.err.println("Could not prepend to HDF5 plugin path: " + H5Zblosc_plugin_path);
             e.printStackTrace();
             System.exit(1);
         }
