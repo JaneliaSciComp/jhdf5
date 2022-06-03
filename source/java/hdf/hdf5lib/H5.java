@@ -17,6 +17,8 @@ package hdf.hdf5lib;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import ch.systemsx.cisd.base.utilities.NativeLibraryUtilities;
 import ch.systemsx.cisd.base.utilities.OSUtilities;
@@ -289,12 +291,24 @@ public class H5 implements java.io.Serializable {
         String H5Zblosc_plugin_path = null;
         try {
             H5Zblosc_plugin_path = System.getProperty("native.caching.libpath") + "/H5Zblosc/" + OSUtilities.getCompatibleComputerPlatform();
+            if (OSUtilities.isMacOS()) {
+                Path dylib  = Paths.get(H5Zblosc_plugin_path, "libH5Zblosc.dylib");
+                Path jnilib = Paths.get(H5Zblosc_plugin_path, "libH5Zblosc.jnilib");
+                try {
+                    // HDF5 will look for *.dylib, but sis-base will look for jnilib. Symlink dylib to jnilib.
+                    if (!Files.exists(dylib)) {
+                        Files.createSymbolicLink(dylib, jnilib);
+                    }
+                } catch(IOException e) {
+                    System.err.println("Could not create dylib symlink for H5Zblosc in " + H5Zblosc_plugin_path);
+                    e.printStackTrace();
+                }
+            }
             H5PLprepend(H5Zblosc_plugin_path);
         }
         catch (HDF5LibraryException e) {
             System.err.println("Could not prepend to HDF5 plugin path: " + H5Zblosc_plugin_path);
             e.printStackTrace();
-            System.exit(1);
         }
 
         // Ensure we have the expected version of the library (with at least the expected release
