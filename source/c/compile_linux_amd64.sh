@@ -30,6 +30,7 @@ else
 fi
 
 if [ -f libjhdf5.so ]; then
+  mkdir -p ../../../libs/native/jhdf5/amd64-Linux
   cp -pf libjhdf5.so ../../../libs/native/jhdf5/amd64-Linux/
   echo "JHDF5 Build deployed"
 else
